@@ -205,3 +205,118 @@ This portfolio demonstrates my ability to:
 
 Last updated: May 2026
 Open to work: ✅ Yes (Junior/Mid-level QA Automation roles)
+
+### INITIALIZED ALL FRAMEWORKS MODULES IN ONE GO
+
+# Ensure you're in the root directory
+cd C:\Users\USER\Documents\full-stack-test-automation-framework\full-stack-test-automation-framework
+
+Write-Host "🔧 Initializing all test modules..." -ForegroundColor Green
+
+# 1. Playwright-Tests-Framework
+cd Playwright-Tests-Framework
+npm init -y
+npm install @playwright/test
+New-Item -ItemType Directory -Force -Path tests, pages
+@'
+import { test, expect } from "@playwright/test";
+
+test("homepage has title", async ({ page }) => {
+  await page.goto("https://example.com");
+  await expect(page).toHaveTitle("Example Domain");
+});
+'@ | Out-File -FilePath tests\example.spec.js -Encoding UTF8
+cd ..
+Write-Host "✅ Playwright-Tests-Framework initialized" -ForegroundColor Yellow
+
+# 2. Selenium-Tests-Framework
+cd Selenium-Tests-Framework
+New-Item -ItemType Directory -Force -Path src\test\java, src\test\resources, src\main\java
+@"
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
+         http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.framework</groupId>
+    <artifactId>selenium-tests</artifactId>
+    <version>1.0.0</version>
+</project>
+"@ | Out-File -FilePath pom.xml -Encoding UTF8
+cd ..
+Write-Host "✅ Selenium-Tests-Framework initialized" -ForegroundColor Yellow
+
+# 3. Cypress-Tests-Framework
+cd Cypress-Tests-Framework
+npm init -y
+New-Item -ItemType Directory -Force -Path cypress\e2e, cypress\fixtures, cypress\support
+cd ..
+Write-Host "✅ Cypress-Tests-Framework initialized" -ForegroundColor Yellow
+
+# 4. Cucumber-BDD-Framework
+cd Cucumber-BDD-Framework
+New-Item -ItemType Directory -Force -Path src\test\java, src\test\resources
+cd ..
+Write-Host "✅ Cucumber-BDD-Framework initialized" -ForegroundColor Yellow
+
+# 5. k6-Performance-Tests
+cd k6-Performance-Tests
+New-Item -ItemType Directory -Force -Path scripts
+@'
+import http from "k6/http";
+import { check } from "k6";
+
+export const options = {
+  vus: 10,
+  duration: "30s",
+};
+
+export default function () {
+  const res = http.get("https://test.k6.io");
+  check(res, { "status is 200": (r) => r.status === 200 });
+}
+'@ | Out-File -FilePath scripts\load-test.js -Encoding UTF8
+cd ..
+Write-Host "✅ k6-Performance-Tests initialized" -ForegroundColor Yellow
+
+# 6. JMeter-Performance-Tests
+cd JMeter-Performance-Tests
+New-Item -ItemType Directory -Force -Path test-plans, results
+cd ..
+Write-Host "✅ JMeter-Performance-Tests initialized" -ForegroundColor Yellow
+
+# 7. Postman-API-Tests
+cd Postman-API-Tests
+New-Item -ItemType Directory -Force -Path collections, environments
+"# Postman API Tests" | Out-File -FilePath README.md -Encoding UTF8
+cd ..
+Write-Host "✅ Postman-API-Tests initialized" -ForegroundColor Yellow
+
+# 8. SQL-Test-Data
+cd SQL-Test-Data
+New-Item -ItemType Directory -Force -Path scripts, test-data
+"# SQL Test Data" | Out-File -FilePath README.md -Encoding UTF8
+cd ..
+Write-Host "✅ SQL-Test-Data initialized" -ForegroundColor Yellow
+
+# 9. Mobile-Tests
+cd Mobile-Tests
+New-Item -ItemType Directory -Force -Path android, ios, appium-tests
+cd ..
+Write-Host "✅ Mobile-Tests initialized" -ForegroundColor Yellow
+
+# 10. CI-CD-Pipelines
+cd CI-CD-Pipelines
+New-Item -ItemType Directory -Force -Path github-actions, jenkins, azure-devops
+cd ..
+Write-Host "✅ CI-CD-Pipelines initialized" -ForegroundColor Yellow
+
+Write-Host "`n🎉 All modules initialized successfully!" -ForegroundColor Green
+
+# Show summary
+Write-Host "`n📁 Module Summary:" -ForegroundColor Magenta
+Get-ChildItem -Directory | ForEach-Object {
+    $itemCount = (Get-ChildItem $_ -Recurse -File 2>$null).Count
+    Write-Host "  📂 $_ ($itemCount files)" -ForegroundColor White
+}
